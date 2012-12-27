@@ -21,27 +21,67 @@
 // SOFTWARE.
 
 using System;
+using System.Collections.Generic;
 using System.Text;
+using NDesk.Options;
 
 namespace Uptime
 {
     internal class Program
     {
+        const string Version = "1.01";
         private static void Main(string[] args)
         {
-            Console.WriteLine(GetUptimeString());
+            bool showVersionNumber = false;
+            bool showHelp = false;
+            OptionSet opt = new OptionSet();
+            opt.Add("?|help", "Display this help.", v => showHelp = true);
+
+            try
+            {
+                List<string> extra = opt.Parse(args);
+            }
+            catch (OptionException ex)
+            {
+                PrintHelp(opt);
+            }
+
+            if (showHelp)
+            {
+                PrintHelp(opt);
+            }
+            else
+            {
+                Console.WriteLine(GetUptimeString());
+            }
         }
 
         private static string GetUptimeString()
         {
+            var ut = new Uptime();
             var uptimeOutput = new StringBuilder();
-            uptimeOutput.Append(DateTime.Now.ToString("H:mm:ss") + " up ");
-            var uptime = TimeSpan.FromMilliseconds(Environment.TickCount);
-            if (uptime.Days > 0)
-                uptimeOutput.Append(uptime.Days + (uptime.Days == 1 ? " day, " : " days, "));
-            uptimeOutput.Append(uptime.Hours + ":" + uptime.Minutes);
+            string currentTime = DateTime.Now.ToString("H:mm:ss");
+            string uptimeDays = ut.UpTime.Days.ToString();
+            string uptimeHours = ut.UpTime.Hours.ToString();
+            string uptimeMinutes = (ut.UpTime.Minutes < 10
+                                        ? "0" + ut.UpTime.Minutes.ToString()
+                                        : ut.UpTime.Minutes.ToString());
+            uptimeOutput.Append(currentTime + " up ");
+            if (ut.UpTime.Days > 0)
+                uptimeOutput.Append(uptimeDays + (ut.UpTime.Days == 1 ? " day, " : " days, "));
+            uptimeOutput.Append(uptimeHours + ":");
+            uptimeOutput.Append(uptimeMinutes);
 
             return uptimeOutput.ToString();
+        }
+
+        private static void PrintHelp(OptionSet options)
+        {
+            Console.WriteLine("Uptime for Windows v" + Version);
+            Console.WriteLine("Copyright (c) 2012 David Heinemann");
+            Console.WriteLine();
+            Console.WriteLine("Usage: Uptime [OPTIONS]");
+            options.WriteOptionDescriptions(Console.Out);
         }
     }
 }

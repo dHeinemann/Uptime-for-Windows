@@ -12,10 +12,10 @@ utility][1].
 * Microsoft .NET 3.5 Framework
 
 ##Download
-The latest version of Uptime for Windows is [v1.00][2].
+The latest version of Uptime for Windows is [v1.01][2].
 
 ##Installation
-Extract Uptime.exe to somewhere in your system PATH.
+Extract Uptime.exe somewhere in your system Path.
 
 ##License
 Uptime for Windows is published under the MIT License.
@@ -43,4 +43,4 @@ Uptime for Windows is published under the MIT License.
     SOFTWARE.
 
 [1]: https://en.wikipedia.org/wiki/Uptime#Using_uptime
-[2]: http://db.tt/yjj6wkEl
+[2]: http://db.tt/cQIIwKyH
